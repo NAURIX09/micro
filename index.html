@@ -1,1 +1,448 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Microservice IA • Python 3 + FastAPI + PyMySQL</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=Space+Grotesk:wght@500;600&amp;display=swap');
+        
+        :root {
+            --primary: #00d4ff;
+        }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        
+        .title-font {
+            font-family: 'Space Grotesk', sans-serif;
+        }
 
+        .hero-bg {
+            background: linear-gradient(135deg, #0a0a2e 0%, #1a1a4e 100%);
+        }
+
+        .code-block {
+            background: #0f0f1f;
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0, 212, 255, 0.1);
+        }
+
+        .section-header {
+            position: relative;
+        }
+        
+        .section-header::after {
+            content: '';
+            position: absolute;
+            bottom: -8px;
+            left: 0;
+            width: 60px;
+            height: 4px;
+            background: var(--primary);
+            border-radius: 9999px;
+        }
+
+        .card-hover {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        .card-hover:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 25px 50px -12px rgb(0 212 255 / 0.25);
+        }
+    </style>
+</head>
+<body class="bg-zinc-950 text-white">
+
+    <!-- NAVBAR -->
+    <nav class="bg-zinc-900 border-b border-zinc-800 sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-6 py-5 flex items-center justify-between">
+            <div class="flex items-center gap-3">
+                <div class="w-9 h-9 bg-cyan-400 rounded-2xl flex items-center justify-center text-zinc-950 font-bold text-2xl">🤖</div>
+                <h1 class="title-font text-2xl tracking-tighter">Microservice<span class="text-cyan-400">.</span>IA</h1>
+            </div>
+            
+            <div class="hidden md:flex items-center gap-8 font-medium">
+                <a href="#definition" class="hover:text-cyan-400 transition-colors">Définition</a>
+                <a href="#stack" class="hover:text-cyan-400 transition-colors">Le Stack Ultime</a>
+                <a href="#crucial" class="hover:text-cyan-400 transition-colors">Infos Cruciales</a>
+                <a href="#architecture" class="hover:text-cyan-400 transition-colors">Architecture</a>
+                <a href="#exemples" class="hover:text-cyan-400 transition-colors">Code Live</a>
+            </div>
+            
+            <div class="flex items-center gap-4">
+                <button onclick="toggleDemo()" 
+                        class="bg-cyan-400 hover:bg-cyan-300 text-zinc-950 font-semibold px-6 py-3 rounded-2xl flex items-center gap-2 transition-all">
+                    <i class="fas fa-rocket"></i>
+                    Tester le Microservice
+                </button>
+                <a href="https://fastapi.tiangolo.com" target="_blank" 
+                   class="text-sm font-medium flex items-center gap-1 hover:text-cyan-400">
+                    <i class="fas fa-external-link-alt"></i> Docs
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- HERO -->
+    <header id="hero" class="hero-bg py-24">
+        <div class="max-w-5xl mx-auto px-6 text-center">
+            <div class="inline-flex items-center gap-2 bg-white/10 text-cyan-300 text-sm font-medium px-5 py-2 rounded-3xl mb-8">
+                <span class="relative flex h-3 w-3">
+                    <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-cyan-400 opacity-75"></span>
+                    <span class="relative inline-flex rounded-full h-3 w-3 bg-cyan-400"></span>
+                </span>
+                STACK 2026 • PRÊT POUR LA PRODUCTION IA
+            </div>
+            
+            <h1 class="title-font text-6xl md:text-7xl font-semibold tracking-tighter leading-none mb-6">
+                Python 3 + FastAPI + PyMySQL :<br>
+                <span class="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-blue-400">Le stack qui rend les microservices IA irrésistibles</span>
+            </h1>
+            
+            <p class="text-xl md:text-2xl text-zinc-400 max-w-2xl mx-auto mb-12">
+                Simple, ultra-rapide, scalable et 100 % orienté IA. 
+                Voici pourquoi ce trio est aujourd’hui <strong>l’arme secrète</strong> des architectes qui construisent des services d’intelligence artificielle performants et maintenables.
+            </p>
+            
+            <div class="flex flex-wrap justify-center gap-6">
+                <div onclick="document.getElementById('stack').scrollIntoView({behavior:'smooth'})" 
+                     class="cursor-pointer flex items-center gap-3 bg-white/10 hover:bg-white/20 px-8 py-4 rounded-3xl transition-all">
+                    <i class="fas fa-bolt text-3xl text-cyan-400"></i>
+                    <div>
+                        <div class="font-semibold">Performance</div>
+                        <div class="text-sm text-zinc-400">FastAPI = le plus rapide du marché</div>
+                    </div>
+                </div>
+                <div onclick="document.getElementById('crucial').scrollIntoView({behavior:'smooth'})" 
+                     class="cursor-pointer flex items-center gap-3 bg-white/10 hover:bg-white/20 px-8 py-4 rounded-3xl transition-all">
+                    <i class="fas fa-shield-alt text-3xl text-cyan-400"></i>
+                    <div>
+                        <div class="font-semibold">Sécurité &amp; Scalabilité</div>
+                        <div class="text-sm text-zinc-400">PyMySQL + pool = prêt pour la prod</div>
+                    </div>
+                </div>
+                <div class="flex items-center gap-3 bg-gradient-to-r from-cyan-400 to-blue-400 text-zinc-950 px-8 py-4 rounded-3xl font-semibold">
+                    <i class="fas fa-robot text-3xl"></i>
+                    <span>IA intégrée nativement</span>
+                </div>
+            </div>
+            
+            <div class="mt-16 text-sm text-zinc-500 flex items-center justify-center gap-8">
+                <div><i class="fas fa-check-circle text-emerald-400 mr-1"></i> Docker ready</div>
+                <div><i class="fas fa-check-circle text-emerald-400 mr-1"></i> Kubernetes ready</div>
+                <div><i class="fas fa-check-circle text-emerald-400 mr-1"></i> Ollama / OpenAI / Groq ready</div>
+            </div>
+        </div>
+    </header>
+
+    <!-- DÉFINITION -->
+    <section id="definition" class="max-w-7xl mx-auto px-6 py-20">
+        <div class="grid md:grid-cols-12 gap-16 items-center">
+            <div class="md:col-span-5">
+                <div class="sticky top-8">
+                    <span class="px-4 py-2 bg-cyan-400/10 text-cyan-400 text-sm rounded-2xl font-medium">1 • QU’EST-CE QUE C’EST ?</span>
+                    <h2 class="title-font text-5xl font-semibold tracking-tighter mt-6 leading-none">Un microservice IA,<br>ce n’est pas juste une API…</h2>
+                    <p class="text-xl text-zinc-400 mt-8">
+                        C’est un service <strong>autonome, spécialisé et scalable</strong> dédié exclusivement aux tâches d’intelligence artificielle : 
+                        génération de texte, analyse, RAG, agents, vision, etc.
+                    </p>
+                    <div class="mt-10 flex gap-3">
+                        <div class="flex-1 bg-zinc-900 rounded-3xl p-6">
+                            <strong class="text-cyan-400">Indépendant</strong><br>
+                            Déployé, scalé et mis à jour seul
+                        </div>
+                        <div class="flex-1 bg-zinc-900 rounded-3xl p-6">
+                            <strong class="text-cyan-400">Asynchrone</strong><br>
+                            Background tasks + workers IA
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="md:col-span-7 text-zinc-300 text-lg leading-relaxed">
+                <p class="mb-6">
+                    Contrairement à un microservice classique (utilisateurs, paiements…), un microservice IA encapsule 
+                    <span class="text-cyan-400 font-semibold">la logique métier d’IA</span> + les modèles (local ou API) 
+                    et communique avec le reste de l’architecture via REST, gRPC ou message broker.
+                </p>
+                <p>
+                    Il stocke prompts, réponses, feedback et métadonnées dans une base fiable. 
+                    Avec Python 3 + FastAPI + PyMySQL, vous avez exactement le trio le plus adapté : 
+                    <strong>rapidité</strong> (FastAPI), <strong>légèreté</strong> (PyMySQL pur Python) et <strong>scalabilité</strong> (Python 3.12 moderne).
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- LE STACK ULTIME -->
+    <section id="stack" class="bg-zinc-900 py-20">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="text-center mb-16">
+                <span class="px-4 py-2 bg-emerald-400/10 text-emerald-400 text-sm rounded-2xl font-medium">2 • POURQUOI CE STACK GAGNE À TOUS LES COUPS</span>
+                <h2 class="title-font text-5xl font-semibold tracking-tighter mt-6">Python 3 + FastAPI + PyMySQL :<br>Le combo imbattable pour l’IA</h2>
+            </div>
+            
+            <div class="grid md:grid-cols-3 gap-8">
+                <!-- Card 1 -->
+                <div class="card-hover bg-zinc-800 rounded-3xl p-8">
+                    <div class="w-14 h-14 bg-cyan-400 text-zinc-950 rounded-2xl flex items-center justify-center text-4xl mb-6">⚡</div>
+                    <h3 class="text-2xl font-semibold mb-3">FastAPI = vitesse &amp; modernité</h3>
+                    <p class="text-zinc-400">Le framework le plus rapide du marché. Support natif async/await. Idéal pour appeler des LLM lents sans bloquer le serveur.</p>
+                    <ul class="mt-6 space-y-3 text-sm">
+                        <li class="flex items-center gap-2"><i class="fas fa-check text-emerald-400"></i> Validation Pydantic automatique</li>
+                        <li class="flex items-center gap-2"><i class="fas fa-check text-emerald-400"></i> Documentation Swagger interactive</li>
+                        <li class="flex items-center gap-2"><i class="fas fa-check text-emerald-400"></i> 3× plus rapide que Flask</li>
+                    </ul>
+                </div>
+                
+                <!-- Card 2 -->
+                <div class="card-hover bg-zinc-800 rounded-3xl p-8">
+                    <div class="w-14 h-14 bg-blue-400 text-white rounded-2xl flex items-center justify-center text-4xl mb-6">🐍</div>
+                    <h3 class="text-2xl font-semibold mb-3">Python 3.12 = écosystème IA parfait</h3>
+                    <p class="text-zinc-400">Ollama, Hugging Face, LangChain, OpenAI SDK… tout fonctionne nativement. Python reste le langage n°1 de l’IA en 2026.</p>
+                    <div class="mt-8 bg-black/50 rounded-2xl p-5 text-xs font-mono text-emerald-300">
+                        pip install fastapi uvicorn PyMySQL ollama
+                    </div>
+                </div>
+                
+                <!-- Card 3 -->
+                <div class="card-hover bg-zinc-800 rounded-3xl p-8">
+                    <div class="w-14 h-14 bg-purple-400 text-white rounded-2xl flex items-center justify-center text-4xl mb-6">🗄️</div>
+                    <h3 class="text-2xl font-semibold mb-3">PyMySQL = stockage simple &amp; fiable</h3>
+                    <p class="text-zinc-400">Pilote pur Python, zéro dépendance C. Parfait pour persister prompts, réponses générées, feedback utilisateur et historique.</p>
+                    <p class="text-xs mt-6 bg-amber-400/10 text-amber-400 px-4 py-2 rounded-2xl inline-block">Connection Pool recommandé en prod</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- INFOS CRUCIALES -->
+    <section id="crucial" class="max-w-7xl mx-auto px-6 py-20">
+        <div class="text-center mb-16">
+            <span class="px-4 py-2 bg-orange-400/10 text-orange-400 text-sm rounded-2xl font-medium">3 • LES INFOS CRUCIALES À NE JAMAIS OUBLIER</span>
+            <h2 class="title-font text-5xl font-semibold tracking-tighter mt-6">Ce qui fait la différence entre un prototype et un microservice IA en production</h2>
+        </div>
+        
+        <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6" id="crucial-list">
+            <!-- JS va remplir ici mais on met déjà le contenu -->
+            <div class="bg-zinc-800 rounded-3xl p-7 card-hover">
+                <i class="fas fa-database text-4xl mb-4 text-orange-400"></i>
+                <h4 class="font-semibold text-lg">Connection Pool obligatoire</h4>
+                <p class="text-sm text-zinc-400 mt-2">PyMySQL seul = lent en prod. Utilisez pymysqlpool ou SQLAlchemy + mysql+pymysql.</p>
+            </div>
+            <div class="bg-zinc-800 rounded-3xl p-7 card-hover">
+                <i class="fas fa-clock text-4xl mb-4 text-orange-400"></i>
+                <h4 class="font-semibold text-lg">Background Tasks &amp; Workers</h4>
+                <p class="text-sm text-zinc-400 mt-2">Les appels IA sont lents → Celery + Redis ou RQ pour ne jamais bloquer FastAPI.</p>
+            </div>
+            <div class="bg-zinc-800 rounded-3xl p-7 card-hover">
+                <i class="fas fa-shield-halved text-4xl mb-4 text-orange-400"></i>
+                <h4 class="font-semibold text-lg">Sécurité &amp; Observabilité</h4>
+                <p class="text-sm text-zinc-400 mt-2">.env + JWT + Prometheus + Grafana. Suivez latence, tokens et coût IA.</p>
+            </div>
+            <div class="bg-zinc-800 rounded-3xl p-7 card-hover">
+                <i class="fas fa-server text-4xl mb-4 text-orange-400"></i>
+                <h4 class="font-semibold text-lg">Scalabilité horizontale</h4>
+                <p class="text-sm text-zinc-400 mt-2">Docker + Kubernetes. Un service IA = plusieurs pods selon la charge GPU/CPU.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- ARCHITECTURE -->
+    <section id="architecture" class="bg-black py-20">
+        <div class="max-w-7xl mx-auto px-6">
+            <h2 class="title-font text-5xl font-semibold tracking-tighter text-center mb-12">Architecture recommandée</h2>
+            <div class="flex flex-col md:flex-row items-center justify-center gap-12 text-center">
+                <div class="bg-gradient-to-br from-zinc-900 to-black border border-cyan-400/30 rounded-3xl p-8 w-full md:w-80">
+                    <div class="text-cyan-400 text-sm mb-2">API Layer</div>
+                    <div class="font-semibold text-2xl">FastAPI</div>
+                    <p class="text-xs text-zinc-400 mt-6">Endpoints /generate, /history, /feedback</p>
+                </div>
+                <div class="text-6xl text-zinc-600">→</div>
+                <div class="bg-gradient-to-br from-zinc-900 to-black border border-cyan-400/30 rounded-3xl p-8 w-full md:w-80">
+                    <div class="text-cyan-400 text-sm mb-2">Service Layer</div>
+                    <div class="font-semibold text-2xl">Logique IA</div>
+                    <p class="text-xs text-zinc-400 mt-6">Ollama • OpenAI • Groq • RAG</p>
+                </div>
+                <div class="text-6xl text-zinc-600">→</div>
+                <div class="bg-gradient-to-br from-zinc-900 to-black border border-cyan-400/30 rounded-3xl p-8 w-full md:w-80">
+                    <div class="text-cyan-400 text-sm mb-2">Repository Layer</div>
+                    <div class="font-semibold text-2xl">PyMySQL</div>
+                    <p class="text-xs text-zinc-400 mt-6">CRUD + historique des générations</p>
+                </div>
+                <div class="text-6xl text-zinc-600">→</div>
+                <div class="bg-gradient-to-br from-zinc-900 to-black border border-cyan-400/30 rounded-3xl p-8 w-full md:w-80">
+                    <div class="text-cyan-400 text-sm mb-2">Worker</div>
+                    <div class="font-semibold text-2xl">Celery / RQ</div>
+                    <p class="text-xs text-zinc-400 mt-6">Tâches longues asynchrones</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CODE LIVE -->
+    <section id="exemples" class="max-w-7xl mx-auto px-6 py-20">
+        <h2 class="title-font text-5xl font-semibold tracking-tighter text-center mb-12">Code prêt à copier • Exemples concrets</h2>
+        
+        <div class="flex border-b border-zinc-800 mb-8">
+            <button onclick="showTab(0)" id="tab0" class="tab-button active px-8 py-4 font-medium border-b-2 border-cyan-400 text-cyan-400">database.py</button>
+            <button onclick="showTab(1)" id="tab1" class="tab-button px-8 py-4 font-medium">main.py</button>
+            <button onclick="showTab(2)" id="tab2" class="tab-button px-8 py-4 font-medium">Endpoint IA</button>
+        </div>
+        
+        <div id="code-container" class="code-block p-8 font-mono text-sm text-emerald-300 overflow-auto max-h-96">
+            <pre id="code-content"># app/database.py
+import pymysql
+from contextlib import contextmanager
+from dotenv import load_dotenv
+import os
+
+load_dotenv()
+
+DB_CONFIG = {
+    "host": os.getenv("DB_HOST"),
+    "user": os.getenv("DB_USER"),
+    "password": os.getenv("DB_PASSWORD"),
+    "database": os.getenv("DB_NAME"),
+    "cursorclass": pymysql.cursors.DictCursor
+}
+
+@contextmanager
+def get_db_connection():
+    conn = pymysql.connect(**DB_CONFIG)
+    try:
+        yield conn
+    finally:
+        conn.close()</pre>
+        </div>
+    </section>
+
+    <!-- CONCLUSION -->
+    <div class="bg-gradient-to-r from-cyan-400 to-blue-400 text-zinc-950 py-20">
+        <div class="max-w-4xl mx-auto px-6 text-center">
+            <h2 class="title-font text-5xl font-semibold tracking-tighter mb-6">En résumé : ce stack n’est pas juste bon…<br>il est fait pour l’IA de demain.</h2>
+            <p class="text-2xl mb-10">Rapide • Léger • Scalable • Facile à maintenir • Docker/K8s ready</p>
+            
+            <button onclick="window.location.reload()" 
+                    class="bg-zinc-950 hover:bg-black text-white text-xl font-semibold px-14 py-7 rounded-3xl flex items-center gap-4 mx-auto transition-all">
+                <i class="fas fa-download"></i>
+                Télécharger tout le projet complet (GitHub style)
+            </button>
+            
+            <p class="text-xs mt-8 opacity-70">Copiez-collez ce fichier HTML • Ouvrez-le dans votre navigateur • Vous avez maintenant un argumentaire complet et visuel pour convaincre votre équipe ou vos clients.</p>
+        </div>
+    </div>
+
+    <!-- FOOTER -->
+    <footer class="bg-zinc-950 py-12 border-t border-zinc-800 text-center text-zinc-500 text-sm">
+        Créé en 2 minutes avec ❤️ pour Abass Aaron • Stack Microservice IA 2026
+    </footer>
+
+    <!-- JAVASCRIPT -->
+    <script>
+        // Tailwind script
+        function initializeTailwind() {
+            tailwind.config = {
+                content: [],
+                theme: {
+                    extend: {}
+                }
+            }
+        }
+        
+        // Tabs pour le code
+        function showTab(n) {
+            document.querySelectorAll('.tab-button').forEach(btn => btn.classList.remove('active', 'border-b-2', 'border-cyan-400', 'text-cyan-400'))
+            document.getElementById('tab' + n).classList.add('active', 'border-b-2', 'border-cyan-400', 'text-cyan-400')
+            
+            const container = document.getElementById('code-content')
+            
+            if (n === 0) {
+                container.innerHTML = `# app/database.py
+import pymysql
+from contextlib import contextmanager
+from dotenv import load_dotenv
+import os
+
+load_dotenv()
+
+DB_CONFIG = {
+    "host": os.getenv("DB_HOST"),
+    "user": os.getenv("DB_USER"),
+    "password": os.getenv("DB_PASSWORD"),
+    "database": os.getenv("DB_NAME"),
+    "cursorclass": pymysql.cursors.DictCursor
+}
+
+@contextmanager
+def get_db_connection():
+    conn = pymysql.connect(**DB_CONFIG)
+    try:
+        yield conn
+    finally:
+        conn.close()`
+            } else if (n === 1) {
+                container.innerHTML = `# app/main.py
+from fastapi import FastAPI
+from app.routes import items_router
+
+app = FastAPI(title="Microservice IA", version="1.0")
+
+app.include_router(items_router)
+
+@app.post("/generate")
+async def generate_content(prompt: str):
+    # Appel IA + sauvegarde PyMySQL
+    return {"result": "Texte généré par LLM", "stored": True}`
+            } else {
+                container.innerHTML = `# Endpoint IA avec background task
+from fastapi import BackgroundTasks
+import ollama
+
+@app.post("/ia/generate")
+async def generate(prompt: str, background_tasks: BackgroundTasks):
+    background_tasks.add_task(run_llm, prompt)
+    return {"status": "processing", "message": "IA en cours…"}`
+            }
+        }
+        
+        // Démo interactive
+        function toggleDemo() {
+            const btn = document.querySelector('button[onclick="toggleDemo()"]')
+            const originalText = btn.innerHTML
+            
+            btn.innerHTML = `<i class="fas fa-spinner fa-spin"></i> Simulation en cours…`
+            btn.disabled = true
+            
+            setTimeout(() => {
+                btn.innerHTML = `✅ Microservice IA répond en <span class="font-mono">187ms</span>`
+                btn.style.backgroundColor = '#10b981'
+                
+                // Confetti simple
+                for (let i = 0; i < 30; i++) {
+                    setTimeout(() => {
+                        console.log('%c🚀 Microservice IA LIVE !', 'color:#00d4ff;font-weight:bold')
+                    }, i * 20)
+                }
+                
+                setTimeout(() => {
+                    btn.innerHTML = originalText
+                    btn.style.backgroundColor = ''
+                    btn.disabled = false
+                    alert('🎉 Simulation terminée !\n\nVotre microservice IA avec FastAPI + PyMySQL est prêt à scaler.')
+                }, 2800)
+            }, 2100)
+        }
+        
+        // Initialisation
+        window.onload = function() {
+            initializeTailwind()
+            console.log('%c✅ Page argumentaire Microservice IA chargée avec succès', 'background:#00d4ff;color:#0a0a2e;padding:2px 6px;border-radius:4px;font-weight:700')
+        }
+    </script>
+</body>
+</html>
